@@ -1,0 +1,45 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+#define int long long
+
+int a[300005];
+int calc(int m, int n){
+    int even_ops = 0;
+    int odd_ops = 0; 
+    for(int i = 1; i <= n; i++){
+        int diff = m - a[i];
+        even_ops += diff / 2;
+        odd_ops += diff % 2;
+    }
+    int extra = even_ops - odd_ops;
+    if(extra >= 2){
+        int take = (extra + 1) / 3;
+        even_ops -= take;
+        odd_ops += 2 * take;
+    }
+    if(even_ops >= odd_ops){
+        return even_ops * 2;
+    }else{
+        return odd_ops * 2 - 1;
+    }
+}
+void solve(){
+    int n;
+    cin>>n;
+    for(int i = 1; i <= n; i++){
+        cin >> a[i];
+    }
+    sort(a + 1, a + n + 1);
+    int mx = a[n];
+    cout<<min(calc(mx, n), calc(mx + 1, n)) << '\n';
+}
+
+signed main(){
+    int t;
+    cin>>t;
+    while(t--){
+        solve();
+    }
+    return 0;
+}
