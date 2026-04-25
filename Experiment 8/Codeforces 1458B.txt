@@ -1,0 +1,47 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+const int MAXN = 105;
+const int MAXC = 10005;
+
+int n;
+int a[MAXN], b[MAXN];
+int f[MAXN][MAXC];
+
+int main() {
+    cin>>n;
+    int sum = 0;
+    for(int i = 1; i <= n; i++){
+        cin >> a[i] >> b[i];
+        sum += b[i];
+    }
+    for(int i = 0; i < MAXN; i++){
+        for(int j = 0; j < MAXC; j++){
+            f[i][j] = -1e9;
+        }
+    }
+    f[0][0] = 0;
+    for(int i = 1; i <= n; i++){
+        for(int j = i; j >= 1; j--){
+            for(int k = MAXC - 1; k >= a[i]; k--){
+                if(f[j-1][k - a[i]] >= 0){
+                    f[j][k] = max(
+                        f[j][k],
+                        min(k, f[j-1][k - a[i]] + b[i])
+                    );
+                }
+            }
+        }
+    }
+    for(int j = 1; j <= n; j++){
+        int ans = 0;
+        for(int k = 0; k < MAXC; k++){
+            if(f[j][k] >= 0){
+                ans = max(ans, min(2 * k, sum + f[j][k]));
+            }
+        }
+        cout<<ans / 2<< "." <<(ans % 2 ? 5 : 0)<<"00000000 ";
+    }
+    cout<<"\n";
+    return 0;
+}
